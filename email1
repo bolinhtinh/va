@@ -1,0 +1,56 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .collapse-content {
+      display: none;
+      font-size: 14px;
+      line-height: 1.5;
+      padding: 10px;
+    }
+    .collapse-button {
+      font-size: 14px;
+      line-height: 1.5;
+      padding: 10px;
+      background-color: #0066cc;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .collapse-button:hover {
+      background-color: #0052a3;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <strong>Peter Trinh</strong><br>
+    Research Assistance<br>
+    R&D Admin<br>
+    phuc.trinh@va.gov
+  </div>
+  <br>
+  <div>
+    <span class="collapse-button" onclick="toggleContent()">Glass Waste Bin & Absorbent Pads Process</span>
+    <div class="collapse-content" id="collapse">
+      <p>Step 1: Take a glass waste bin from the storage room.</p>
+      <p>Step 2: Place the bin in a designated location for glass waste disposal.</p>
+      <p>Step 3: Place an absorbent pad at the bottom of the bin.</p>
+      <p>Step 4: Place glass waste in the bin.</p>
+      <p>Step 5: When the bin is full, replace the absorbent pad and dispose of the glass waste in the appropriate container.</p>
+    </div>
+  </div>
+  <script>
+    function toggleContent() {
+      var content = document.getElementById("collapse");
+      if (content.style.display === "none") {
+        content.style.display = "block";
+      } else {
+        content.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
+
