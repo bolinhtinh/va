@@ -88,10 +88,72 @@
             document.getElementById('steps').innerHTML = '';
             document.getElementById('steps').style.display = 'none';
         }
+        
+        function searchOptions(searchValue) {
+    var searchResultsDiv = document.getElementById('search-results');
+    if (searchValue) {
+        var results = [];
+        searchValue = searchValue.toLowerCase().trim();
+        for (var mainOption in stepsData){
+            if (mainOption.toLowerCase().includes(searchValue)) {
+                results.push({category: mainOption, subcategory: null, step: null });
+            }
+            var subOptions = stepsData[mainOption];
+            for (var subOption in subOptions) {
+                if (subOption.toLowerCase().includes(searchValue)) {
+                    results.push({category: mainOption, subcategory: subOption, step: null });
+                }
+                
+                var steps = subOptions[subOption];
+                for (var stepIndex in steps) {
+                    if (steps[stepIndex].toLowerCase().includes(searchValue)) {
+                        results.push({category: mainOption, subcategory: subOption, step: stepIndex });
+                    }
+                }
+            }
+        }
+
+        var searchResultsHTML = '<ul>';
+        for (var result of results) {
+            searchResultsHTML += '<li onclick="goToResult(' + "'" + result.category + "', " + (result.subcategory ? ("'" + result.subcategory + "', ") : "null, ") + (result.step !== null ? ("'" + result.step + "')") : "null)") + '">';
+            searchResultsHTML += result.category;
+            if (result.subcategory) searchResultsHTML += ' > ' + result.subcategory;
+            if (result.step !== null) searchResultsHTML += ' > ' + stepsData[result.category][result.subcategory][result.step];
+            searchResultsHTML += '</li>';
+        }
+        searchResultsHTML += '</ul>';
+
+        searchResultsDiv.innerHTML = searchResultsHTML;
+        searchResultsDiv.style.display = "block";
+    } else {
+        searchResultsDiv.innerHTML = '';
+        searchResultsDiv.style.display = "none";
+    }
+}
+
+function goToResult(category, subcategory, step) {
+    document.getElementById('menu').value = category;
+    displaySubMenu(category);
+    if (subcategory) {
+        document.getElementById('submenu').value = subcategory;
+        displaySteps(subcategory);
+    }
+    if (step !== null) {
+        var stepElement = document.getElementById('steps').querySelector('ol li:nth-child(' + (parseInt(step) + 1) + ')');
+        stepElement.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Clear the search input and hide search results
+    document.getElementById('search').value = '';
+    document.getElementById('search-results').style.display = 'none';
+}
+
     </script>
 </head>
+
 <body>
-    <h1>Select an option:</h1>
+    <h1>Quick links:</h1>
+
     <div>
         <select class="inline" name="menu" id="menu" onchange="displaySubMenu(this.value)">
             <option value="">--Select an option--</option>
@@ -109,5 +171,10 @@
     <div id="steps">
         <!-- Steps will be populated by JavaScript -->
     </div>
+    
+        <input type="text" id="search" placeholder="Quick Search..." oninput="searchOptions(this.value)" />
+<div id="search-results" style="display:none;"></div>
+
+
 </body>
 </html>
