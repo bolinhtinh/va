@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drop-down Menu Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #submenu, #steps {
+            display: none;
+        }
+
+        .inline {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        select, button {
+            font-size: 1rem;
+            padding: 5px 10px;
+            background-color: #009688;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        select:hover, select:focus, button:hover, button:focus {
+            background-color: #006e5a;
+        }
+
+        button {
+            cursor:pointer;
+        }
+    </style>
+    <script>
+        var stepsData = {
+            ADPAC: {
+                ACA: ['Step 1', 'Step 2', 'Step 3'],
+                ARA: ['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5']
+            },
+            RDIS: {
+                RD1: ['Step 1', 'Step 2'],
+                RD2: ['Step 1', 'Step 2', 'Step 3', 'Step 4']
+            },
+            TMS: {
+                TM1: ['Step 1', 'Step 2', 'Step 3'],
+                TM2: ['Step 1', 'Step 2', 'Step 3', 'Step 4']
+            },
+            Safety: {
+                Safe1: ['Step 1', 'Step 2'],
+                Safe2: ['Step 1', 'Step 2', 'Step 3']
+            }
+        };
+
+        function displaySubMenu(selectedOption) {
+            var submenu = document.getElementById('submenu');
+            submenu.style.display = "inline";
+            var suboptionsHTML = '<option value="">--Select a sub-option--</option>';
+            for (var suboption in stepsData[selectedOption]) {
+                suboptionsHTML += '<option value="' + suboption + '">' + suboption + '</option>';
+            }
+            submenu.innerHTML = suboptionsHTML;
+            document.getElementById('steps').innerHTML = '';
+            document.getElementById('steps').style.display = 'none';
+        }
+
+        function displaySteps(selectedSubOption) {
+            var selectedMainOption = document.getElementById('menu').value;
+            var steps = stepsData[selectedMainOption][selectedSubOption];
+            var stepsHTML = '<ol>';
+            for (var i = 0; i < steps.length; i++) {
+                stepsHTML += '<li>' + steps[i] + '</li>';
+            }
+            stepsHTML += '</ol>';
+            var stepsDiv = document.getElementById('steps');
+            stepsDiv.innerHTML = stepsHTML;
+            stepsDiv.style.display = "block";
+        }
+
+        function clearOptions() {
+            document.getElementById('menu').selectedIndex = 0;
+            var submenu = document.getElementById('submenu');
+            submenu.innerHTML = '';
+            submenu.style.display = 'none';
+            document.getElementById('steps').innerHTML = '';
+            document.getElementById('steps').style.display = 'none';
+        }
+    </script>
+</head>
+<body>
+    <h1>Select an option:</h1>
+    <div>
+        <select class="inline" name="menu" id="menu" onchange="displaySubMenu(this.value)">
+            <option value="">--Select an option--</option>
+            <option value="ADPAC">ADPAC</option>
+            <option value="RDIS">RDIS</option>
+            <option value="TMS">TMS</option>
+            <option value="Safety">Safety</option>
+        </select>
+        <select class="inline" name="submenu" id="submenu" onchange="displaySteps(this.value)">
+            <!-- Sub-options will be populated by JavaScript -->
+        </select>
+        <button class="inline" onclick="clearOptions()">Clear</button>
+    </div>
+    <br>
+    <div id="steps">
+        <!-- Steps will be populated by JavaScript -->
+    </div>
+</body>
+</html>
